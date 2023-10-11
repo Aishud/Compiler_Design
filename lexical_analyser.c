@@ -1,99 +1,201 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-bool isDelimiter(char ch)
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+
+int iskeyword(char buffer[])
 {
-	if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ',' || ch == ';' || ch == '>' || ch == '<' || ch == '=' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}')
-		return (true);
-	return (false);
-}
-bool isOperator(char ch)
+char keywords[32][10] = {"auto","break","case","char","const","continue","default",
+"do","double","else","enum","extern","float","for","goto",
+"if","int","long","register","return","short","signed",
+"sizeof","static","struct","switch","typedef","union",
+"unsigned","void","volatile","while"};
+int flag=0;
+for(int i=0;i<32;i++)
 {
-	if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '>' || ch == '<' || ch == '=')
-		return (true);
-	return (false);
-}
-bool validIdentifier(char* str)
+if(strcmp(keywords[i],buffer)==0)
 {
-	if (str[0] == '0' || str[0] == '1' || str[0] == '2' || str[0] == '3' || str[0] == '4' || str[0] == '5' || str[0] == '6' || str[0] == '7' || str[0] == '8' || str[0] == '9' || isDelimiter(str[0]) == true)
-		return (false);
-	return (true);
+flag=1;
+break;
 }
-bool isKeyword(char* str)
-{
-	if (!strcmp(str, "if") || !strcmp(str, "else") || !strcmp(str, "while") || !strcmp(str, "do") || !strcmp(str, "break") || !strcmp(str, "continue") || !strcmp(str, "int") || !strcmp(str, "double") || !strcmp(str, "float") || !strcmp(str, "return") || !strcmp(str, "char") || !strcmp(str, "case") || !strcmp(str, "char") || !strcmp(str, "sizeof") || !strcmp(str, "long") || !strcmp(str, "short") || !strcmp(str, "typedef") || !strcmp(str, "switch") || !strcmp(str, "unsigned") || !strcmp(str, "void") || !strcmp(str, "static") || !strcmp(str, "struct") || !strcmp(str, "goto"))
-		return (true);
-	return (false);
 }
-bool isInteger(char* str)
-{
-	int i, len = strlen(str);
-	if (len == 0)
-		return (false);
-	for (i = 0; i < len; i++) {
-		if (str[i] != '0' && str[i] != '1' && str[i] != '2' && str[i] != '3' && str[i] != '4' && str[i] != '5' && str[i] != '6' && str[i] != '7' && str[i] != '8' && str[i] != '9' || (str[i] == '-' && i > 0))
-			return (false);
-	}
-	return (true);
+return flag;
 }
-bool isRealNumber(char* str)
-{
-	int i, len = strlen(str);
-	bool hasDecimal = false;
-	if (len == 0)
-		return (false);
-	for (i = 0; i < len; i++) {
-		if (str[i] != '0' && str[i] != '1' && str[i] != '2' && str[i] != '3' && str[i] != '4' && str[i] != '5' && str[i] != '6' && str[i] != '7' && str[i] != '8' && str[i] != '9' && str[i] != '.' || (str[i] == '-' && i > 0))
-			return (false);
-		if (str[i] == '.')
-			hasDecimal = true;
-	}
-	return (hasDecimal);
-}
-char* subString(char* str, int left, int right)
-{
-	int i;
-	char* subStr = (char*)malloc(sizeof(char) * (right - left + 2));
-	for (i = left; i <= right; i++)
-		subStr[i - left] = str[i];
-	subStr[right - left + 1] = '\0';
-	return (subStr);
-}
-void parse(char* str)
-{
-	int left = 0, right = 0;
-	int len = strlen(str);
-	while (right <= len && left <= right) {
-		if (isDelimiter(str[right]) == false)
-			right++;
-		if (isDelimiter(str[right]) == true && left == right) {
-			if (isOperator(str[right]) == true)
-				printf("'%c': OPERATOR\n", str[right]);
-			right++;
-			left = right;
-		} else if (isDelimiter(str[right]) == true && left != right
-				|| (right == len && left != right)) {
-			char* subStr = subString(str, left, right - 1);
-			if (isKeyword(subStr) == true)
-				printf("'%s': KEYWORD\n", subStr);
-			else if (isInteger(subStr) == true)
-				printf("'%s': INTEGER\n", subStr);
-			else if (isRealNumber(subStr) == true)
-				printf("'%s': REAL NUMBER\n", subStr);
-			else if (validIdentifier(subStr) == true
-					&& isDelimiter(str[right - 1]) == false)
-				printf("'%s': IDENTIFIER\n", subStr);
-			else if (validIdentifier(subStr) == false
-					&& isDelimiter(str[right - 1]) == false)
-				printf("'%s': NOT A VALID IDENTIFIER\n", subStr);
-			left = right;
-		}
-	}
-	return;
-}
+
+
 int main()
 {
-	char str[100] = "int a = b + 1c; ";
-	return (0);
+	char ch,buffer[15],operators[]="+-*/%=";
+	char special[]="#{};()\"\'<>";
+	FILE *fp1,*fp2;
+	int i,j=0;
+	fp1=fopen("prgm1.c","r");
+	fp2=fopen("out1.txt","w");
+	if(fp1==NULL)
+	{
+		printf("Error in opening\n");
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+
+int iskeyword(char buffer[])
+{
+char keywords[32][10] = {"auto","break","case","char","const","continue","default",
+"do","double","else","enum","extern","float","for","goto",
+"if","int","long","register","return","short","signed",
+"sizeof","static","struct","switch","typedef","union",
+"unsigned","void","volatile","while"};
+int flag=0;
+for(int i=0;i<32;i++)
+{
+if(strcmp(keywords[i],buffer)==0)
+{
+flag=1;
+break;
 }
+}
+return flag;
+}
+
+
+int main()
+{
+	char ch,buffer[15],operators[]="+-*/%=";
+	char special[]="#{};()\"\'<>";
+	FILE *fp1,*fp2;
+	int i,j=0;
+	fp1=fopen("prgm1.c","r");
+	fp2=fopen("out1.txt","w");
+	if(fp1==NULL)
+	{
+		printf("Error in opening\n");
+		exit(0);
+	}
+	fprintf(fp2,"Lexeme\t\tToken\n");
+	while((ch=fgetc(fp1))!=EOF)
+	{
+		if(isdigit(ch))
+		{
+			fprintf(fp2,"%7c\t\tDigit\n",ch);
+		}
+
+		else if(isalpha(ch))
+		{
+			buffer[j]=ch;
+			j++;
+			ch=fgetc(fp1);
+
+			while(isalnum(ch) && ch!=' ')
+			{
+				buffer[j]=ch;
+				j++;
+				ch=fgetc(fp1);
+			}
+
+			buffer[j]='\0';
+			j=0;
+			if(iskeyword(buffer)==1)
+			{
+				fprintf(fp2,"%7s\t\tKeyword\n",buffer);
+			}
+
+			else
+			{
+				fprintf(fp2,"%7s\t\tIdentifier\n",buffer);
+			}
+
+		}
+		for(i=0;i<6;i++)
+		{
+			if(ch==operators[i])
+			{
+				if(ch=='/')
+				{
+
+					char c=fgetc(fp1);
+					if(c =='/')
+					{
+						while((c=fgetc(fp1))!='\n');
+					}
+					else if(c =='*')
+					{
+						while((c=fgetc(fp1))!='/'); 	
+					}
+					else
+					{
+						fprintf(fp2,"%7c\t\tOperator\n",ch);
+						ungetc(c,fp1);
+						break;
+					}
+				}
+				else
+					{
+						fprintf(fp2,"%7c\t\tOperator\n",ch);
+						break;
+					}
+			}
+		}
+		for(i=0;i<7;i++)
+		{
+			if(ch==special[i])
+			{
+				fprintf(fp2,"%7c\t\tSpecial symbol\n",ch);
+				break;
+			}
+		}
+	}
+	fclose(fp1);
+	fclose(fp2);
+	return 0;
+}￼Enter		exit(0);
+	}
+	fprintf(fp2,"Lexeme\t\tToken\n");
+	while((ch=fgetc(fp1))!=EOF)
+	{
+		if(isdigit(ch))
+		{
+			fprintf(fp2,"%7c\t\tDigit\n",ch);
+		}
+
+		else if(isalpha(ch))
+		{
+			buffer[j]=ch;
+			j++;
+			ch=fgetc(fp1);
+
+			while(isalnum(ch) && ch!=' ')
+			{
+				buffer[j]=ch;
+				j++;
+				ch=fgetc(fp1);
+			}
+
+			buffer[j]='\0';
+			j=0;
+			if(iskeyword(buffer)==1)
+			fprintf(fp2,"%7s\t\tKeyword\n",buffer);
+			}
+
+			else
+			{
+				fprintf(fp2,"%7s\t\tIdentifier\n",buffer);
+			}
+
+		}
+		for(i=0;i<6;i++)
+		{
+			if(ch==operators[i])
+			{
+				if(ch=='/')
+				{
+
+					char c=fgetc(fp1);
+					if(c =='/')
+					{
+						while((c=fgetc(fp1))!='\n');
+					}
+					else if(c =='*')
+					{
+						while((c=fgetc(fp1))!='/'); 	
+					}
